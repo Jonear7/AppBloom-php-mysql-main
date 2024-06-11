@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:bloom/auth/auth_service.dart';
 import 'package:bloom/auth/bottombar.dart';
 import 'package:bloom/main.dart';
@@ -17,7 +18,6 @@ class PaymentScreen extends StatefulWidget {
   final int roomId;
   final DateTime checkInDate;
   final DateTime checkOutDate;
-  final int roomAmount;
   final double totalPrice;
   final int userId;
 
@@ -26,9 +26,8 @@ class PaymentScreen extends StatefulWidget {
     required this.roomId,
     required this.checkInDate,
     required this.checkOutDate,
-    required this.roomAmount,
     required this.totalPrice,
-    required this.userId,
+    required this.userId, required int roomNumber,
   });
 
   @override
@@ -134,11 +133,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'room_id': widget.roomId.toString(),
       'checkin_date': dateFormat.format(widget.checkInDate),
       'checkout_date': dateFormat.format(widget.checkOutDate),
-      'room_amount': widget.roomAmount.toString(),
       'total_price': widget.totalPrice.toString(),
       'payment_id': paymentId.toString(),
+      'room_number': widget.room.roomNumber.toString(),
+      'status': 'booked', // Adding the status field
     };
-
     // Update the URL with your actual endpoint
     var bookingUrl = 'http://$API_IP_ADDRESS/api_bloom/addbooking.php';
 
@@ -266,12 +265,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Room Amount: ${widget.roomAmount}',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Total Price: \$${widget.totalPrice.toStringAsFixed(2)}', // Fix totalPrice here
+                      'Total Price: \$${widget.totalPrice.toStringAsFixed(2)}',
                       style: TextStyle(fontSize: 16),
                     ),
                   ],
@@ -284,7 +278,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 'assets/images/Qr.jpg',
                 height: 200,
               ),
-            ),   
+            ),
             Center(
               child: ElevatedButton(
                 onPressed: () async {
@@ -311,7 +305,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 child: const Text('Upload Image & Save Payment'),
               ),
             ),
-         
             SizedBox(height: 16),
             if (_image != null)
               Image.file(
@@ -326,3 +319,4 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 }
+

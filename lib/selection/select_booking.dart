@@ -18,16 +18,15 @@ class BookingScreen extends StatefulWidget {
 class _BookingScreenState extends State<BookingScreen> {
   DateTime? _checkInDate;
   DateTime? _checkOutDate;
-  int _roomAmount = 0; 
   double _totalPrice = 0.0;
 
   void _calculateTotalPrice() {
     if (_checkInDate != null && _checkOutDate != null) {
       // Calculate the number of days between check-in and check-out
       final int numberOfDays = _checkOutDate!.difference(_checkInDate!).inDays;
-      // Calculate the total price by multiplying the number of days, room price, and room amount
+      // Calculate the total price by multiplying the number of days and room price
       setState(() {
-        _totalPrice = widget.room.rmtype.price * numberOfDays * _roomAmount;
+        _totalPrice = widget.room.rmtype.price * numberOfDays;
       });
     }
   }
@@ -70,26 +69,6 @@ class _BookingScreenState extends State<BookingScreen> {
                 },
               ),
               SizedBox(height: 16),
-              RoomAmountSection(
-                roomAmount: _roomAmount,
-                onIncrement: () {
-                  if (_roomAmount < 4) {
-                    setState(() {
-                      _roomAmount++;
-                      _calculateTotalPrice(); // Recalculate total price when room amount changes
-                    });
-                  }
-                },
-                onDecrement: () {
-                  if (_roomAmount > 1) {
-                    setState(() {
-                      _roomAmount--;
-                      _calculateTotalPrice(); // Recalculate total price when room amount changes
-                    });
-                  }
-                },
-              ),
-              SizedBox(height: 16),
               TotalPriceSection(totalPrice: _totalPrice),
               SizedBox(height: 16),
               PaymentButton(
@@ -103,9 +82,8 @@ class _BookingScreenState extends State<BookingScreen> {
                               userId: widget.userId,
                               checkInDate: _checkInDate!,
                               checkOutDate: _checkOutDate!,
-                              roomAmount: _roomAmount,
                               totalPrice: _totalPrice,
-                              room: widget.room,
+                              room: widget.room, roomNumber: widget.room.roomNumber,
                             ),
                           ),
                         );
@@ -171,6 +149,7 @@ class RoomImageSection extends StatelessWidget {
     );
   }
 }
+
 class BookingDetailsSection extends StatelessWidget {
   final DateTime? checkInDate;
   final DateTime? checkOutDate;
@@ -268,49 +247,9 @@ class BookingDetailsSection extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
+              )
             ],
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class RoomAmountSection extends StatelessWidget {
-  final int roomAmount;
-  final Function()? onIncrement;
-  final Function()? onDecrement;
-
-  RoomAmountSection({
-    required this.roomAmount,
-    required this.onIncrement,
-    required this.onDecrement,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(
-          'Room Amount: ',
-          style: TextStyle(fontSize: 16),
-        ),
-        IconButton(
-          icon: Icon(Icons.remove),
-          onPressed: onDecrement,
-        ),
-        SizedBox(width: 8),
-        Text(
-          '$roomAmount',
-          style: TextStyle(fontSize: 16),
-        ),
-        SizedBox(width: 8),
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: onIncrement,
         ),
       ],
     );

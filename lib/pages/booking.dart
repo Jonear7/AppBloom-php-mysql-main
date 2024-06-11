@@ -84,14 +84,14 @@ class _BookingListScreenState extends State<BookingListScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Room Name: ${booking['room_name'] ?? 'Loading...'}',
+                            'Room Name: ${booking['type_name'] ?? 'Loading...'}',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           SizedBox(height: 8),
                           Text('Check-in Date: ${booking['checkin_date']}'),
                           Text('Check-out Date: ${booking['checkout_date']}'),
                           Text('Total Price: ${booking['total_price']}'),
-                          Text('Room Amount: ${booking['room_amount']}'),
+                          Text('Room Number: ${booking['room_number']}'),
                         ],
                       ),
                     );
