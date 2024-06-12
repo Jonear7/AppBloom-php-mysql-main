@@ -10,7 +10,7 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(MyApp(prefs: prefs));
 }
-const String API_IP_ADDRESS ='192.168.1.11';
+const String API_IP_ADDRESS ='192.168.100.190';
 
 class MyApp extends StatelessWidget {
   final SharedPreferences prefs;

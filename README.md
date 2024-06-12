@@ -35,8 +35,7 @@ CREATE TABLE IF NOT EXISTS booking (
 -- Create table for payment
 CREATE TABLE IF NOT EXISTS payment (
   pay_ID INT(11) NOT NULL AUTO_INCREMENT,
-  pay_total DECIMAL(10,2),
-  pay_name VARCHAR(50),
+  pay_type VARCHAR(50),
   pay_date DATE,
   PRIMARY KEY (pay_ID)
 );

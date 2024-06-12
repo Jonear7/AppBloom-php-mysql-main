@@ -53,50 +53,54 @@ class _PaymentScreenState extends State<PaymentScreen> {
     });
   }
 
-  Future<void> _uploadPaymentImage(File imageFile) async {
-    var confirmed = await _showConfirmationDialog();
-    if (!confirmed) return;
+Future<void> _uploadPaymentImage(File imageFile) async {
+  var confirmed = await _showConfirmationDialog();
+  if (!confirmed) return;
 
-    var url = 'http://$API_IP_ADDRESS/api_bloom/addpayment.php';
-    var request = http.MultipartRequest('POST', Uri.parse(url));
-    request.files.add(
-      http.MultipartFile(
-        'payment_image',
-        imageFile.readAsBytes().asStream(),
-        imageFile.lengthSync(),
-        filename: imageFile.path.split('/').last,
-      ),
-    );
-    request.fields['payment_date'] =
-        DateFormat('yyyy-MM-dd').format(DateTime.now());
+  var url = 'http://$API_IP_ADDRESS/api_bloom/addpayment.php';
+  var request = http.MultipartRequest('POST', Uri.parse(url));
+  request.files.add(
+    http.MultipartFile(
+      'payment_image',
+      imageFile.readAsBytes().asStream(),
+      imageFile.lengthSync(),
+      filename: imageFile.path.split('/').last,
+    ),
+  );
+  request.fields['payment_date'] =
+      DateFormat('yyyy-MM-dd').format(DateTime.now());
+  
+  // Add the payment_total field to the request
+  request.fields['payment_total'] = widget.totalPrice.toString();
 
-    try {
-      var response = await request.send();
-      if (response.statusCode == 200) {
-        var responseData = await response.stream.bytesToString();
-        var decodedData = json.decode(responseData);
-        if (decodedData['status'] == 'success') {
-          print('Payment image uploaded successfully');
-          var paymentId = decodedData['payment_id'];
-          if (paymentId != null) {
-            await _processPayment(paymentId);
-            return;
-          } else {
-            throw Exception('Failed to extract payment ID');
-          }
+  try {
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      var responseData = await response.stream.bytesToString();
+      var decodedData = json.decode(responseData);
+      if (decodedData['status'] == 'success') {
+        print('Payment image uploaded successfully');
+        var paymentId = decodedData['payment_id'];
+        if (paymentId != null) {
+          await _processPayment(paymentId);
+          return;
         } else {
-          throw Exception(decodedData['message'] ?? 'Unknown error');
+          throw Exception('Failed to extract payment ID');
         }
       } else {
-        throw Exception('Failed to upload payment image: ${response.reasonPhrase}');
+        throw Exception(decodedData['message'] ?? 'Unknown error');
       }
-    } catch (e) {
-      print('Error uploading payment image: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error uploading payment image: $e')),
-      );
+    } else {
+      throw Exception('Failed to upload payment image: ${response.reasonPhrase}');
     }
+  } catch (e) {
+    print('Error uploading payment image: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error uploading payment image: $e')),
+    );
   }
+}
+
 
   Future<bool> _showConfirmationDialog() async {
     return await showDialog<bool>(
