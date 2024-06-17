@@ -72,6 +72,9 @@ Future<void> _uploadPaymentImage(File imageFile) async {
   
   // Add the payment_total field to the request
   request.fields['payment_total'] = widget.totalPrice.toString();
+  
+  // Add the user_id field to the request
+  request.fields['user_id'] = _userId.toString(); // Assuming _userId is initialized and contains the user's ID
 
   try {
     var response = await request.send();
@@ -100,6 +103,8 @@ Future<void> _uploadPaymentImage(File imageFile) async {
     );
   }
 }
+
+
 
 
   Future<bool> _showConfirmationDialog() async {
