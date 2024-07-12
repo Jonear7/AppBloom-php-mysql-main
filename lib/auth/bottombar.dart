@@ -1,7 +1,10 @@
-import 'package:bloom/pages/booking.dart';
-import 'package:bloom/pages/home.dart';
-import 'package:bloom/pages/profile.dart';
-import 'package:bloom/pages/room.dart';
+
+import 'package:bloom/screens/main_screens/booking.dart';
+import 'package:bloom/screens/main_screens/home.dart';
+
+
+import 'package:bloom/screens/main_screens/profile.dart';
+import 'package:bloom/screens/main_screens/room.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +23,7 @@ class _BottomBarState extends State<BottomBar> {
     HomeScreen(),
     RoomListScreen(), 
     BookingListScreen(),
-    ProfilePage(),
+    ProfileScreen(),
   
   ];
 

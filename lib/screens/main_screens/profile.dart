@@ -1,28 +1,13 @@
+
+import 'package:bloom/screens/login.dart';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:bloom/auth/login.dart'; // Assuming you have defined the LoginPage
 
-class UserData {
-  final String username;
-  final String email;
-  final String phone;
+import '../../model/user_model.dart';
 
-  UserData({
-    required this.username,
-    required this.email,
-    required this.phone,
-  });
 
-  factory UserData.fromJson(Map<String, dynamic> json) {
-    return UserData(
-      username: json['username'],
-      email: json['email'],
-      phone: json['phone'],
-    );
-  }
-}
-
-class ProfilePage extends StatelessWidget {
+class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,31 +35,35 @@ class ProfilePage extends StatelessWidget {
             final userData = snapshot.data!;
             return Padding(
               padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Center(
-                      child: Text(
-                        'User Profile',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              child: Container(
+                color: const Color.fromARGB(255, 90, 86, 79),
+             
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Center(
+                        child: Text(
+                          'User Profile',
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
-                  ),
-                  ListTile(
-                    title: Text('Username'),
-                    subtitle: Text('${userData.username}'),
-                  ),
-                  ListTile(
-                    title: Text('Email'),
-                    subtitle: Text('${userData.email}'),
-                  ),
-                  ListTile(
-                    title: Text('Phone'),
-                    subtitle: Text('${userData.phone}'),
-                  ),
-                ],
+                    ListTile(
+                      title: Text('Username'),
+                      subtitle: Text('${userData.username}'),
+                    ),
+                    ListTile(
+                      title: Text('Email'),
+                      subtitle: Text('${userData.email}'),
+                    ),
+                    ListTile(
+                      title: Text('Phone'),
+                      subtitle: Text('${userData.phone}'),
+                    ),
+                  ],
+                ),
               ),
             );
           }

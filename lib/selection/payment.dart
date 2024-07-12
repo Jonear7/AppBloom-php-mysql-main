@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:bloom/auth/auth_service.dart';
 import 'package:bloom/auth/bottombar.dart';
 import 'package:bloom/main.dart';
-import 'package:bloom/pages/room.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +12,8 @@ import 'package:intl/intl.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
 import 'package:path_provider/path_provider.dart';
+
+import '../model/room_model.dart';
 
 class PaymentScreen extends StatefulWidget {
   final Room room;
@@ -138,14 +140,14 @@ Future<void> _uploadPaymentImage(File imageFile) async {
 
     // Prepare booking data
     var bookingData = {
-      'user_id': _userId.toString(),
+      // 'user_id': _userId.toString(),
       'room_id': widget.roomId.toString(),
       'checkin_date': dateFormat.format(widget.checkInDate),
       'checkout_date': dateFormat.format(widget.checkOutDate),
       'total_price': widget.totalPrice.toString(),
       'payment_id': paymentId.toString(),
       'room_number': widget.room.roomNumber.toString(),
-      'status': 'booked', // Adding the status field
+      'status': 'Booked', // Adding the status field
     };
     // Update the URL with your actual endpoint
     var bookingUrl = 'http://$API_IP_ADDRESS/api_bloom/addbooking.php';

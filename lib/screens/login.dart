@@ -1,8 +1,14 @@
 
+
+
+import 'package:bloom/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:bloom/auth/auth_service.dart';
 import 'package:bloom/auth/bottombar.dart';
-import 'package:bloom/auth/register.dart';
+
+
+
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});

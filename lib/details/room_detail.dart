@@ -1,8 +1,9 @@
 import 'dart:math';
-import 'package:bloom/pages/room.dart';
 import 'package:bloom/selection/select_booking.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+
+import '../model/room_model.dart';
 
 class RoomDetailsScreen extends StatelessWidget {
   final Room room;

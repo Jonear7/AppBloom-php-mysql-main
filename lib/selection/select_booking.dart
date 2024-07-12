@@ -1,6 +1,9 @@
-import 'package:bloom/pages/room.dart';
+
+
 import 'package:bloom/selection/payment.dart';
 import 'package:flutter/material.dart';
+
+import '../model/room_model.dart';
 
 class BookingScreen extends StatefulWidget {
   final Room room;

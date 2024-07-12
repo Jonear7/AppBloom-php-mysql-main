@@ -2,9 +2,12 @@
 
 import 'dart:async';
 
-import 'package:bloom/auth/auth_service.dart';
 import 'package:bloom/auth/bottombar.dart';
-import 'package:bloom/auth/login.dart';
+import 'package:bloom/auth/auth_service.dart';
+import 'package:bloom/screens/login.dart';
+
+
+
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
