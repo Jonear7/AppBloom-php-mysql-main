@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:bloom/auth/auth_service.dart';
-import 'package:bloom/auth/bottombar.dart';
+import 'package:bloom/controller/auth_service.dart';
+import 'package:bloom/models/room_model.dart';
+import 'package:bloom/models/utils/bottombar.dart';
 import 'package:bloom/main.dart';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +12,6 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
 import 'package:path_provider/path_provider.dart';
 
-import '../model/room_model.dart';
 
 class PaymentScreen extends StatefulWidget {
   final Room room;
@@ -29,7 +27,8 @@ class PaymentScreen extends StatefulWidget {
     required this.checkInDate,
     required this.checkOutDate,
     required this.totalPrice,
-    required this.userId, required int roomNumber,
+    required this.userId,
+    required int roomNumber,
   });
 
   @override
@@ -55,84 +54,86 @@ class _PaymentScreenState extends State<PaymentScreen> {
     });
   }
 
-Future<void> _uploadPaymentImage(File imageFile) async {
-  var confirmed = await _showConfirmationDialog();
-  if (!confirmed) return;
+  Future<void> _uploadPaymentImage(File imageFile) async {
+    var confirmed = await _showConfirmationDialog();
+    if (!confirmed) return;
 
-  var url = 'http://$API_IP_ADDRESS/api_bloom/addpayment.php';
-  var request = http.MultipartRequest('POST', Uri.parse(url));
-  request.files.add(
-    http.MultipartFile(
-      'payment_image',
-      imageFile.readAsBytes().asStream(),
-      imageFile.lengthSync(),
-      filename: imageFile.path.split('/').last,
-    ),
-  );
-  request.fields['payment_date'] =
-      DateFormat('yyyy-MM-dd').format(DateTime.now());
-  
-  // Add the payment_total field to the request
-  request.fields['payment_total'] = widget.totalPrice.toString();
-  
-  // Add the user_id field to the request
-  request.fields['user_id'] = _userId.toString(); // Assuming _userId is initialized and contains the user's ID
+    var url = 'http://$API_IP_ADDRESS/api_bloom/addpayment.php';
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.files.add(
+      http.MultipartFile(
+        'payment_image',
+        imageFile.readAsBytes().asStream(),
+        imageFile.lengthSync(),
+        filename: imageFile.path.split('/').last,
+      ),
+    );
+    request.fields['payment_date'] =
+        DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-  try {
-    var response = await request.send();
-    if (response.statusCode == 200) {
-      var responseData = await response.stream.bytesToString();
-      var decodedData = json.decode(responseData);
-      if (decodedData['status'] == 'success') {
-        print('Payment image uploaded successfully');
-        var paymentId = decodedData['payment_id'];
-        if (paymentId != null) {
-          await _processPayment(paymentId);
-          return;
+    // Add the payment_total field to the request
+    request.fields['payment_total'] = widget.totalPrice.toString();
+
+    // Add the user_id field to the request
+    request.fields['user_id'] = _userId
+        .toString(); // Assuming _userId is initialized and contains the user's ID
+
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        var responseData = await response.stream.bytesToString();
+        var decodedData = json.decode(responseData);
+        if (decodedData['status'] == 'success') {
+          print('Payment image uploaded successfully');
+          var paymentId = decodedData['payment_id'];
+          if (paymentId != null) {
+            await _processPayment(paymentId);
+            return;
+          } else {
+            throw Exception('Failed to extract payment ID');
+          }
         } else {
-          throw Exception('Failed to extract payment ID');
+          throw Exception(decodedData['message'] ?? 'Unknown error');
         }
       } else {
-        throw Exception(decodedData['message'] ?? 'Unknown error');
+        throw Exception(
+            'Failed to upload payment image: ${response.reasonPhrase}');
       }
-    } else {
-      throw Exception('Failed to upload payment image: ${response.reasonPhrase}');
+    } catch (e) {
+      print('Error uploading payment image: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error uploading payment image: $e')),
+      );
     }
-  } catch (e) {
-    print('Error uploading payment image: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error uploading payment image: $e')),
-    );
   }
-}
-
-
-
 
   Future<bool> _showConfirmationDialog() async {
     return await showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Confirmation'),
-          content: Text('Are you sure you want to upload this image and process the payment?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true); // Return true if confirmed
-              },
-              child: Text('Yes'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false); // Return false if canceled
-              },
-              child: Text('No'),
-            ),
-          ],
-        );
-      },
-    ) ?? false; // Return false if dialog is dismissed
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Confirmation'),
+              content: Text(
+                  'Are you sure you want to upload this image and process the payment?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true); // Return true if confirmed
+                  },
+                  child: Text('Yes'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pop(false); // Return false if canceled
+                  },
+                  child: Text('No'),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false; // Return false if dialog is dismissed
   }
 
   Future<void> _processPayment(int paymentId) async {
@@ -140,7 +141,7 @@ Future<void> _uploadPaymentImage(File imageFile) async {
 
     // Prepare booking data
     var bookingData = {
-      // 'user_id': _userId.toString(),
+      'user_id': _userId.toString(),
       'room_id': widget.roomId.toString(),
       'checkin_date': dateFormat.format(widget.checkInDate),
       'checkout_date': dateFormat.format(widget.checkOutDate),
@@ -171,7 +172,8 @@ Future<void> _uploadPaymentImage(File imageFile) async {
             builder: (context) {
               return AlertDialog(
                 title: Text('Success'),
-                content: Text('Booking successful. Thank you for your reservation!'),
+                content:
+                    Text('Booking successful. Thank you for your reservation!'),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
@@ -330,4 +332,3 @@ Future<void> _uploadPaymentImage(File imageFile) async {
     );
   }
 }
-

@@ -2,8 +2,8 @@
 
 import 'dart:async';
 
-import 'package:bloom/auth/bottombar.dart';
-import 'package:bloom/auth/auth_service.dart';
+import 'package:bloom/models/utils/bottombar.dart';
+import 'package:bloom/controller/auth_service.dart';
 import 'package:bloom/screens/login.dart';
 
 

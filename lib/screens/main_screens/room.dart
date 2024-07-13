@@ -1,15 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:bloom/details/room_detail.dart';
+import 'package:bloom/screens/main_screens/details/room_detail.dart';
 import 'package:bloom/main.dart';
-
+import 'package:bloom/models/room_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import '../../model/room_model.dart';
-
-
-
 
 class RoomListScreen extends StatefulWidget {
   @override
@@ -89,8 +84,12 @@ class _RoomListScreenState extends State<RoomListScreen> {
                   selectedRoomType = newValue;
                 });
               },
-              items: <String>['Deluxe','Superior Double','Superior Twin','Junior']
-                  .map<DropdownMenuItem<String>>((String value) {
+              items: <String>[
+                'Deluxe',
+                'Superior Double',
+                'Superior Twin',
+                'Junior'
+              ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
@@ -108,12 +107,14 @@ class _RoomListScreenState extends State<RoomListScreen> {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
                   final List<Room>? roomDataList = snapshot.data;
-                  List<Room> availableRooms =
-                      roomDataList!.where((room) => room.isAvailable()).toList();
-                  
+                  List<Room> availableRooms = roomDataList!
+                      .where((room) => room.isAvailable())
+                      .toList();
+
                   if (selectedRoomType != null) {
                     availableRooms = availableRooms
-                        .where((room) => room.rmtype.typeName == selectedRoomType)
+                        .where(
+                            (room) => room.rmtype.typeName == selectedRoomType)
                         .toList();
                   }
 
@@ -144,8 +145,8 @@ class _RoomListScreenState extends State<RoomListScreen> {
                           );
                         },
                         child: Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           padding: EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: Color.fromARGB(255, 244, 244, 244),

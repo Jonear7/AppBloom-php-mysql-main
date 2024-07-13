@@ -1,7 +1,7 @@
 
 
 import 'package:bloom/splash.dart';
-import 'package:bloom/utils/shared_preferences_provider.dart';
+import 'package:bloom/models/utils/shared_preferences_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +23,7 @@ void main() async {
 }
 
 
-const String API_IP_ADDRESS = '192.168.1.11';
+const String API_IP_ADDRESS = '192.168.1.9';
 
 class MyApp extends StatelessWidget {
   @override

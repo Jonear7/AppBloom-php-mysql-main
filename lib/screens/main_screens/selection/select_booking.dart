@@ -1,9 +1,8 @@
-
-
-import 'package:bloom/selection/payment.dart';
+import 'package:bloom/models/room_model.dart';
+import 'package:bloom/screens/main_screens/selection/payment.dart';
 import 'package:flutter/material.dart';
 
-import '../model/room_model.dart';
+
 
 class BookingScreen extends StatefulWidget {
   final Room room;
@@ -86,7 +85,8 @@ class _BookingScreenState extends State<BookingScreen> {
                               checkInDate: _checkInDate!,
                               checkOutDate: _checkOutDate!,
                               totalPrice: _totalPrice,
-                              room: widget.room, roomNumber: widget.room.roomNumber,
+                              room: widget.room,
+                              roomNumber: widget.room.roomNumber,
                             ),
                           ),
                         );

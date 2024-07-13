@@ -1,7 +1,5 @@
-
 import 'package:bloom/screens/main_screens/booking.dart';
 import 'package:bloom/screens/main_screens/home.dart';
-
 
 import 'package:bloom/screens/main_screens/profile.dart';
 import 'package:bloom/screens/main_screens/room.dart';
@@ -21,10 +19,9 @@ class _BottomBarState extends State<BottomBar> {
 
   final List<Widget> _pages = [
     HomeScreen(),
-    RoomListScreen(), 
+    RoomListScreen(),
     BookingListScreen(),
     ProfileScreen(),
-  
   ];
 
   @override
@@ -39,9 +36,12 @@ class _BottomBarState extends State<BottomBar> {
         children: _pages,
       ),
       bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255), // Set background color to purple
-        color: Color.fromARGB(255, 119, 53, 185), // Set the color of the icons to blue
-        buttonBackgroundColor: Color.fromARGB(255, 179, 143, 216), // Set the color of the active icon to blue
+        backgroundColor: Color.fromARGB(
+            255, 255, 255, 255), // Set background color to purple
+        color: Color.fromARGB(
+            255, 119, 53, 185), // Set the color of the icons to blue
+        buttonBackgroundColor: Color.fromARGB(
+            255, 179, 143, 216), // Set the color of the active icon to blue
         height: 57,
         animationDuration: Duration(milliseconds: 300),
         animationCurve: Curves.easeInOut,

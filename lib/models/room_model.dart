@@ -54,7 +54,6 @@ class Room {
   }
 }
 
-
 class RoomType {
   final int rmtypeId;
   final String typeName;
@@ -76,7 +75,7 @@ class RoomType {
       if (json['imageUrls'] != null) {
         imageUrls = (json['imageUrls'] as List)
             .map((imageUrl) =>
-            'http://$API_IP_ADDRESS/api_bloom/uploads/$imageUrl')
+                'http://$API_IP_ADDRESS/api_bloom/uploads/$imageUrl')
             .toList();
       }
       return RoomType(

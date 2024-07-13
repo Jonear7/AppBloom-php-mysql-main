@@ -1,11 +1,9 @@
-
 import 'package:bloom/screens/login.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../model/user_model.dart';
-
+import '../../models/user_model.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -15,14 +13,21 @@ class ProfileScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Color.fromARGB(255, 189, 15, 76)),
-              child: Icon(Icons.logout, color: Color.fromARGB(255, 253, 253, 253) ,size: 25, )),
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color.fromARGB(255, 189, 15, 76)),
+                child: Icon(
+                  Icons.logout,
+                  color: Color.fromARGB(255, 253, 253, 253),
+                  size: 25,
+                )),
             onPressed: () {
               _logout(context);
             },
           ),
-        ],automaticallyImplyLeading: false,
+        ],
+        automaticallyImplyLeading: false,
       ),
       body: FutureBuilder<UserData>(
         future: fetchUserData(),
@@ -35,35 +40,36 @@ class ProfileScreen extends StatelessWidget {
             final userData = snapshot.data!;
             return Padding(
               padding: EdgeInsets.all(16),
-              child: Container(
-                color: const Color.fromARGB(255, 90, 86, 79),
-             
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    color: Colors.blue,
+                    
+                    child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 8),
                       child: Center(
                         child: Text(
-                          'User Profile',
-                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          'Profile',
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold ,color: Colors.white),
                         ),
                       ),
                     ),
-                    ListTile(
-                      title: Text('Username'),
-                      subtitle: Text('${userData.username}'),
-                    ),
-                    ListTile(
-                      title: Text('Email'),
-                      subtitle: Text('${userData.email}'),
-                    ),
-                    ListTile(
-                      title: Text('Phone'),
-                      subtitle: Text('${userData.phone}'),
-                    ),
-                  ],
-                ),
+                  ),
+                  ListTile(
+                    title: Text('Username'),
+                    subtitle: Text('${userData.username}'),
+                  ),
+                  ListTile(
+                    title: Text('Email'),
+                    subtitle: Text('${userData.email}'),
+                  ),
+                  ListTile(
+                    title: Text('Phone'),
+                    subtitle: Text('${userData.phone}'),
+                  ),
+                ],
               ),
             );
           }
