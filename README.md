@@ -33,6 +33,7 @@ CREATE TABLE booking (
     FOREIGN KEY (room_id) REFERENCES rooms(room_id)
 );
 
+
 -- Create table for payment
 CREATE TABLE payment_online (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,6 +44,9 @@ CREATE TABLE payment_online (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
+
+
 CREATE TABLE payment_walk_in (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
     payment_date DATE NOT NULL,
@@ -51,6 +55,8 @@ CREATE TABLE payment_walk_in (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
+
 -- Create table for room
 CREATE TABLE room (
     room_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,6 +65,9 @@ CREATE TABLE room (
     status ENUM('available', 'unavailable') DEFAULT 'available',
     FOREIGN KEY (rmtype_id) REFERENCES rmtype(rmtype_id)
 );
+
+
+
 CREATE TABLE rmtype (
     rmtype_id INT AUTO_INCREMENT PRIMARY KEY,
     type_name VARCHAR(100) NOT NULL,
@@ -66,6 +75,9 @@ CREATE TABLE rmtype (
     price DECIMAL(10, 2) NOT NULL,
     image LONGBLOB
 );
+
+
+
 -- Create table for users
 CREATE TABLE IF NOT EXISTS users (
   user_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -75,6 +87,10 @@ CREATE TABLE IF NOT EXISTS users (
   phone VARCHAR(20),
   PRIMARY KEY (user_id)
 );
+
+
+
+
 CREATE TABLE employees (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
